@@ -1,0 +1,134 @@
+//// This is the public API offered by your entity.
+//syntax = "proto3";
+//
+//package com.pim.api;
+//
+//import "com/pim/domain/pim_domain.proto";
+//import "kalix/annotations.proto";
+//import "google/api/annotations.proto";
+//import "google/protobuf/empty.proto";
+//
+//option java_outer_classname = "PimApi";
+//
+//message CreateBusinessRequest {
+//  string id = 1 [(kalix.field).entity_key = true];
+//  string businessUnit = 2;
+//  string businessUnitName = 3;
+//  string groupName = 4;
+//  string merchandiserId = 5;
+//  string totalMarketAmount = 6;
+//}
+//
+//message CreateDepartmentRequest {
+//  string id = 1 [(kalix.field).entity_key = true];
+//  string departmentName = 2;
+//  string merchandiser = 3;
+//  string budgetIntakePercent = 4;
+//  string markupCalculationType = 5;
+//}
+//
+//message CreateBrandRequest {
+//  string id = 1 [(kalix.field).entity_key = true];
+//  string brandCode = 2;
+//  string description = 3;
+//  string sequence = 4;
+//}
+//
+//message CreateSubBrandRequest {
+//  string id = 1 [(kalix.field).entity_key = true];
+//  string parentBrandId = 2;
+//  string subBrandCode = 3;
+//  string description = 4;
+//  string sequence = 5;
+//  string active = 6;
+//  string rank = 7;
+//}
+//
+//message Address {
+//  string street1 = 1;
+//  string street2 = 2;
+//  string city = 3;
+//  string state = 4;
+//  string postcode = 5;
+//  string country = 6;
+//}
+//
+//
+//message CreateSupplierRequest {
+//  string id = 1 [(kalix.field).entity_key = true];
+//  string supplierName = 2;
+//  string contactName = 3;
+//  string qualityCheckIndicator = 4;
+//  string currencyCode = 5;
+//  string language = 6;
+//  string terms = 7;
+//  string freightTerms = 8;
+//  string returnAllowed = 9;
+//  string paymentMethod = 10;
+//  string settlementCode = 11;
+//  Address address = 12;
+//}
+//
+//message CreateProductRequest {
+//  string id = 1 [(kalix.field).entity_key = true];
+//  string style = 2;
+//  string sku = 3;
+//  string styleDescription = 4;
+//  string enrichedStatus = 5;
+//  string lonDesc = 6;
+//  string shortDesc = 7;
+//  string season = 8;
+//  string supplierId = 9;
+//}
+//
+//
+//service PimService {
+//
+//  rpc CreateBusiness (CreateBusinessRequest) returns (google.protobuf.Empty) {
+//    option (kalix.method).entity.key_generator = VERSION_4_UUID;
+//    option (google.api.http) = {
+//      post: "/pim/business/create"
+//      body: "*"
+//    };
+//  }
+//
+//  rpc CreateBrand (CreateBrandRequest) returns (google.protobuf.Empty) {
+//    option (kalix.method).entity.key_generator = VERSION_4_UUID;
+//    option (google.api.http) = {
+//      post: "/pim/brand/create"
+//      body: "*"
+//    };
+//  }
+//
+//  rpc CreateSubBrand (CreateSubBrandRequest) returns (google.protobuf.Empty) {
+//    option (kalix.method).entity.key_generator = VERSION_4_UUID;
+//    option (google.api.http) = {
+//      post: "/pim/brand/sub/create"
+//      body: "*"
+//    };
+//  }
+//
+//  rpc CreateDepartment (CreateDepartmentRequest) returns (google.protobuf.Empty) {
+//    option (kalix.method).entity.key_generator = VERSION_4_UUID;
+//    option (google.api.http) = {
+//      post: "/pim/dept/create"
+//      body: "*"
+//    };
+//  }
+//
+//  rpc CreateSupplier (CreateSupplierRequest) returns (google.protobuf.Empty) {
+//    option (kalix.method).entity.key_generator = VERSION_4_UUID;
+//    option (google.api.http) = {
+//      post: "/pim/supplier/create"
+//      body: "*"
+//    };
+//  }
+//
+//  rpc CreateProduct (CreateProductRequest) returns (google.protobuf.Empty) {
+//    option (kalix.method).entity.key_generator = VERSION_4_UUID;
+//    option (google.api.http) = {
+//      post: "/pim/product/create"
+//      body: "*"
+//    };
+//  }
+//}

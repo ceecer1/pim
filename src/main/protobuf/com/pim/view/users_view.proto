@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package com.pim.view;
+
+import "kalix/annotations.proto";
+import "com/pim/domain/users_domain.proto";
+import "google/protobuf/any.proto";
+import "google/api/annotations.proto";
+//import "com/pim/api/users_api.proto";
+
+message ByEmailRequest {
+ string email = 1;
+}
+
+message UserView {
+  string id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  string phone = 5;
+}
+
+service UsersView {
+  option (kalix.codegen) = {
+    view: {}
+  };
+
+  rpc ProcessUserCreated(domain.UserCreated) returns (UserView) {
+    option (kalix.method).eventing.in = {
+      event_sourced_entity: "users"
+    };
+
+    option (kalix.method).view.update = {
+      table: "users"
+      transform_updates: true
+    };
+  }
+
+//  rpc SearchUserByEmail(ByEmailRequest) returns (stream UserView) {
+//    option (kalix.method).view.query = {
+//      query: "SELECT * FROM users where email = :email"
+//    };
+//  }
+
+  rpc GetUsers(ByEmailRequest) returns (stream UserView) {
+    option (kalix.method).view.query = {
+      query: "SELECT * FROM users"
+    };
+    option (google.api.http) = {
+      post: "/users/list"
+      body: "*"
+    };
+  }
+}
