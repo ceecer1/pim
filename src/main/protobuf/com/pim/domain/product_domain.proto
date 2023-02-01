@@ -1,0 +1,14 @@
+syntax = "proto3";
+package com.pim.domain;
+
+import "kalix/annotations.proto";
+
+message Product {
+  string id = 1;
+  string name = 2;
+  string supplier = 3;
+}
+
+message ProductCreated {
+  Product product = 1;
+}

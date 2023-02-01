@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package com.pim.api;
+
+import "com/pim/domain/product_domain.proto";
+import "kalix/annotations.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+message CreateProductRequest {
+  string name = 1;
+  string supplier = 2;
+}
+
+service ProductService {
+  option (kalix.codegen) = {
+    event_sourced_entity: {
+      name: "com.pim.domain.ProductEntity"
+      entity_type: "products"
+      state: "com.pim.domain.Product"
+      events: [
+        "com.pim.domain.ProductCreated"
+      ]
+    }
+  };
+
+  rpc CreateProduct (CreateProductRequest) returns (google.protobuf.Empty) {
+    option (kalix.method).entity.key_generator = VERSION_4_UUID;
+    option (google.api.http) = {
+      post: "/products/create"
+      body: "*"
+    };
+  }
+}

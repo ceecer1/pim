@@ -1,7 +1,8 @@
 package com.pim
 
-import com.pim.action.LoginServiceAction
+import com.pim.domain.ProductEntity
 import com.pim.domain.UsersEntity
+import com.pim.view.ProductsViewServiceImpl
 import com.pim.view.UsersViewImpl
 import kalix.scalasdk.Kalix
 import org.slf4j.LoggerFactory
@@ -21,8 +22,9 @@ object Main {
     // If you prefer, you may remove this and manually register these components in a
     // `Kalix()` instance.
     KalixFactory.withComponents(
+      new ProductEntity(_),
       new UsersEntity(_),
-      new LoginServiceAction(_),
+      new ProductsViewServiceImpl(_),
       new UsersViewImpl(_))
   }
 

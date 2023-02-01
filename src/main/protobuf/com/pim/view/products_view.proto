@@ -3,36 +3,29 @@ syntax = "proto3";
 package com.pim.view;
 
 import "kalix/annotations.proto";
-import "com/pim/domain/users_domain.proto";
+import "com/pim/domain/product_domain.proto";
 import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
-//import "com/pim/api/users_api.proto";
+import "google/protobuf/empty.proto";
 
-message ByEmailRequest {
- string email = 1;
-}
-
-message UserView {
+message ProductView {
   string id = 1;
-  string firstName = 2;
-  string lastName = 3;
-  string email = 4;
-  string phone = 5;
-  string token = 6;
+  string name = 2;
+  string supplier = 3;
 }
 
-service UsersView {
+service ProductsViewService {
   option (kalix.codegen) = {
     view: {}
   };
 
-  rpc ProcessUserCreated(domain.UserCreated) returns (UserView) {
+  rpc ProcessProductCreated(domain.ProductCreated) returns (ProductView) {
     option (kalix.method).eventing.in = {
-      event_sourced_entity: "users"
+      event_sourced_entity: "products"
     };
 
     option (kalix.method).view.update = {
-      table: "users"
+      table: "products"
       transform_updates: true
     };
   }
@@ -43,12 +36,12 @@ service UsersView {
 //    };
 //  }
 
-  rpc GetUsers(ByEmailRequest) returns (stream UserView) {
+  rpc GetUsers(google.protobuf.Empty) returns (stream ProductView) {
     option (kalix.method).view.query = {
-      query: "SELECT * FROM users"
+      query: "SELECT * FROM products"
     };
     option (google.api.http) = {
-      post: "/users/list"
+      post: "/products/list"
       body: "*"
     };
   }

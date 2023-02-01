@@ -23,10 +23,12 @@ class UsersViewImpl(context: ViewContext) extends AbstractUsersView {
 
   private def convertToApi(user: Users): UserView =
     UserView(
-      id = user.id, firstName = user.firstName,
+      id = user.id,
+      firstName = user.firstName,
       lastName = user.lastName,
       email = user.email,
-      phone = user.phone
+      phone = user.phone,
+      token = user.token
     )
 
 }

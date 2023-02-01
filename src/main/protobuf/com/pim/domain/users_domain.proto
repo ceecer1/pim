@@ -19,6 +19,7 @@ message Users {
   string email = 4;
   string password = 5;
   string phone = 6;
+  string token = 7;
 }
 
 message UserCreated {
