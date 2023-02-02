@@ -23,6 +23,15 @@ producer microservice
 This example provides grpc api to list customer orders.
 
 
+# NOTES: [Make sure the following things are conidered]
+
+ - Use the latest Kalix SDK version
+ - Use the latest Kalix-proxy container image inside docker-compose
+ - Send the name of services in email where you are composing complex SQL like Kalix View queries 
+to enable advanced view joins feature
+ - You do not need to enable this advanced view flag for S2S eventing producer and consumers, unless you are composing 
+them in views
+ - Use loggers inside the handler methods for debugging
 
 
 

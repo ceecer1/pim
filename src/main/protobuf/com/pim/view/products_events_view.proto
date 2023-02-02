@@ -35,6 +35,7 @@ service IncomingProductStreamView {
     };
   }
 
+  // from within the same service
   rpc UpdateOrders(domain.OrderPlaced) returns (domain.Order) {
     option (kalix.method).eventing.in = {
       event_sourced_entity: "orders"
@@ -45,9 +46,10 @@ service IncomingProductStreamView {
     };
   }
 
+  // from within the same service
   rpc UpdateCustomers(domain.UserCreated) returns (CustomerView) {
     option (kalix.method).eventing.in = {
-      event_sourced_entity: "customers"
+      event_sourced_entity: "users" //this is the available entity type
     };
     option (kalix.method).view.update = {
       table: "customers"
@@ -55,18 +57,20 @@ service IncomingProductStreamView {
     };
   }
 
+  // commented the following view since more than 1 query per view is not supported yet.
   // api to list events from the store built from consuming messages from producer side
-  rpc GetProducts(google.protobuf.Empty) returns (stream domain.Product) {
-    option (kalix.method).view.query = {
-      query: "SELECT * FROM all_products"
-    };
-    option (google.api.http) = {
-      post: "/products/list"
-      body: "*"
-    };
-  }
+  //rpc GetProducts(google.protobuf.Empty) returns (stream domain.Product) {
+  //  option (kalix.method).view.query = {
+  //    query: "SELECT * FROM all_products"
+  //  };
+  //  option (google.api.http) = {
+  //    post: "/products/list"
+  //    body: "*"
+  //  };
+  //}*/
 
-  rpc GetAllOrderWithDetails(google.protobuf.Empty) returns (stream CustomerOrder) { // <6>
+  // advanced join view
+  rpc GetAllOrderWithDetails(google.protobuf.Empty) returns (stream CustomerOrder) {
     option (kalix.method).view.query = {
       query: "SELECT * FROM customers "
           "JOIN orders ON orders.customer_id = customers.id "
@@ -77,9 +81,14 @@ service IncomingProductStreamView {
 
 message CustomerOrder {
   string id = 1;
-  string email = 2;
-  string name = 3;
-  string order_id = 4;
-  string product_id = 5;
-  string supplier = 6;
+  string firstName = 2;
+  string lastName = 3;
+  string phone = 4;
+  string email = 5;
+  string name = 6;
+  string order_id = 7;
+  string customer_id = 8;
+  string product_id = 9;
+  string supplier = 10;
+  int32 quantity = 11;
 }
