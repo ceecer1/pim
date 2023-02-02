@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package com.pim.view;
+
+import "kalix/annotations.proto";
+import "com/pim/domain/users_domain.proto";
+import "com/pim/domain/products_domain.proto";
+import "com/pim/domain/orders_domain.proto";
+import "google/protobuf/any.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+message CustomerView {
+  string id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  string phone = 5;
+}
+
+service IncomingProductStreamView {
+  option (kalix.codegen) = {
+    view: {}
+  };
+
+  // listens events from the producer side, from another service deployed separately earlier
+  rpc UpdateProducts(domain.ProductCreated) returns (domain.Product) {
+    option (kalix.method).eventing.in.direct = {
+      service: "product-producer"
+      event_stream_id: "products_events"
+    };
+    option (kalix.method).view.update = {
+      table: "all_products" // eventually consistent store for events from producer side
+      transform_updates: true;
+    };
+  }
+
+  rpc UpdateOrders(domain.OrderPlaced) returns (domain.Order) {
+    option (kalix.method).eventing.in = {
+      event_sourced_entity: "orders"
+    };
+    option (kalix.method).view.update = {
+      table: "orders"
+      transform_updates: true;
+    };
+  }
+
+  rpc UpdateCustomers(domain.UserCreated) returns (CustomerView) {
+    option (kalix.method).eventing.in = {
+      event_sourced_entity: "customers"
+    };
+    option (kalix.method).view.update = {
+      table: "customers"
+      transform_updates: true
+    };
+  }
+
+  // api to list events from the store built from consuming messages from producer side
+  rpc GetProducts(google.protobuf.Empty) returns (stream domain.Product) {
+    option (kalix.method).view.query = {
+      query: "SELECT * FROM all_products"
+    };
+    option (google.api.http) = {
+      post: "/products/list"
+      body: "*"
+    };
+  }
+
+  rpc GetAllOrderWithDetails(google.protobuf.Empty) returns (stream CustomerOrder) { // <6>
+    option (kalix.method).view.query = {
+      query: "SELECT * FROM customers "
+          "JOIN orders ON orders.customer_id = customers.id "
+          "JOIN all_products ON all_products.id = orders.product_id "
+    };
+  }
+}
+
+message CustomerOrder {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string order_id = 4;
+  string product_id = 5;
+  string supplier = 6;
+}

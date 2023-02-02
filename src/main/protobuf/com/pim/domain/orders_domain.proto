@@ -1,0 +1,15 @@
+syntax = "proto3";
+package com.pim.domain;
+
+import "kalix/annotations.proto";
+
+message Order {
+  string order_id = 1 [(kalix.field).entity_key = true];
+  string customer_id = 2;
+  string product_id = 3;
+  int32 quantity = 4;
+}
+
+message OrderPlaced {
+  Order order = 1;
+}

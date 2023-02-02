@@ -31,7 +31,6 @@ class UsersEntity(context: EventSourcedEntityContext) extends AbstractUsersEntit
           createUserRequest.firstName,
           createUserRequest.lastName,
           createUserRequest.email,
-          createUserRequest.password,
           createUserRequest.phone)
         )
       )

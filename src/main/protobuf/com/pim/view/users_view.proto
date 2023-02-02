@@ -4,13 +4,10 @@ package com.pim.view;
 
 import "kalix/annotations.proto";
 import "com/pim/domain/users_domain.proto";
+import "com/pim/domain/products_domain.proto";
 import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
-//import "com/pim/api/users_api.proto";
-
-message ByEmailRequest {
- string email = 1;
-}
+import "google/protobuf/empty.proto";
 
 message UserView {
   string id = 1;
@@ -18,7 +15,6 @@ message UserView {
   string lastName = 3;
   string email = 4;
   string phone = 5;
-  string token = 6;
 }
 
 service UsersView {
@@ -37,13 +33,7 @@ service UsersView {
     };
   }
 
-//  rpc SearchUserByEmail(ByEmailRequest) returns (stream UserView) {
-//    option (kalix.method).view.query = {
-//      query: "SELECT * FROM users where email = :email"
-//    };
-//  }
-
-  rpc GetUsers(ByEmailRequest) returns (stream UserView) {
+  rpc GetUsers(google.protobuf.Empty) returns (stream UserView) {
     option (kalix.method).view.query = {
       query: "SELECT * FROM users"
     };

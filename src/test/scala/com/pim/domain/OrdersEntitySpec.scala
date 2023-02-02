@@ -12,10 +12,10 @@ import org.scalatest.wordspec.AnyWordSpec
 // As long as this file exists it will not be overwritten: you can maintain it yourself,
 // or delete it so it is regenerated as needed.
 
-class ProductEntitySpec extends AnyWordSpec with Matchers {
-  "The ProductEntity" should {
+class OrdersEntitySpec extends AnyWordSpec with Matchers {
+  "The OrdersEntity" should {
     "have example test that can be removed" in {
-      val testKit = ProductEntityTestKit(new ProductEntity(_))
+      val testKit = OrdersEntityTestKit(new OrdersEntity(_))
       pending
       // use the testkit to execute a command:
       // val result: EventSourcedResult[R] = testKit.someOperation(SomeRequest("id"));
@@ -29,10 +29,10 @@ class ProductEntitySpec extends AnyWordSpec with Matchers {
       // verify the final state after the command
     }
 
-    "correctly process commands of type CreateProduct" in {
-      val testKit = ProductEntityTestKit(new ProductEntity(_))
+    "correctly process commands of type Create" in {
+      val testKit = OrdersEntityTestKit(new OrdersEntity(_))
       pending
-      // val result: EventSourcedResult[Empty] = testKit.createProduct(api.CreateProductRequest(...))
+      // val result: EventSourcedResult[Empty] = testKit.create(api.PlaceOrder(...))
     }
   }
 }

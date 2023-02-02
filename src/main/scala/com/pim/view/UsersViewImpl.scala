@@ -27,8 +27,7 @@ class UsersViewImpl(context: ViewContext) extends AbstractUsersView {
       firstName = user.firstName,
       lastName = user.lastName,
       email = user.email,
-      phone = user.phone,
-      token = user.token
+      phone = user.phone
     )
 
 }

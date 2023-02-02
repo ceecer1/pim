@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package com.pim.api;
+
+import "kalix/annotations.proto";
+import "com/pim/domain/orders_domain.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+message PlaceOrder {
+  domain.Order order = 3;
+}
+
+service OrderService {
+  option (kalix.codegen) = {
+    event_sourced_entity: {
+      name: "com.pim.domain.OrdersEntity"
+      entity_type: "orders"
+      state: "com.pim.domain.Order"
+      events: ["com.pim.domain.OrderPlaced"]
+    }
+  };
+  option (kalix.service).acl.allow = { principal: ALL };
+
+  rpc Create(PlaceOrder) returns (google.protobuf.Empty) {
+    option (kalix.method).entity.key_generator = VERSION_4_UUID;
+    option (google.api.http) = {
+      post: "/orders/create"
+      body: "*"
+    };
+  }
+}
