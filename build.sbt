@@ -1,5 +1,5 @@
 organization := "pim"
-version := "1.0.9"
+version := "1.0.15"
 
 scalaVersion := "2.13.8"
 

@@ -2,6 +2,7 @@ package com.pim.domain
 
 import com.google.protobuf.empty.Empty
 import com.pim.api
+import com.pim.api.UserId
 import kalix.scalasdk.eventsourcedentity.EventSourcedEntity
 import kalix.scalasdk.eventsourcedentity.EventSourcedEntityContext
 import org.slf4j.{Logger, LoggerFactory}
@@ -20,7 +21,7 @@ class UsersEntity(context: EventSourcedEntityContext) extends AbstractUsersEntit
   override def emptyState: Users = Users.defaultInstance
 
   override def createUser(currentState: Users,
-                          createUserRequest: api.CreateUserRequest): EventSourcedEntity.Effect[Empty] = {
+                          createUserRequest: api.CreateUserRequest): EventSourcedEntity.Effect[com.pim.api.UserId] = {
     if(createUserRequest.email.isEmpty) {
       log.error("Email is empty")
       effects.error("Email can't be empty")
@@ -34,7 +35,7 @@ class UsersEntity(context: EventSourcedEntityContext) extends AbstractUsersEntit
           createUserRequest.phone)
         )
       )
-      effects.emitEvent(user).thenReply(_ => Empty.defaultInstance)
+      effects.emitEvent(user).thenReply(_ => UserId(user.getUser.id))
     }
   }
 

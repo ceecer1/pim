@@ -14,6 +14,10 @@ message CreateUserRequest {
   string phone = 5;
 }
 
+message UserId {
+  string userId = 1;
+}
+
 service UsersService {
   option (kalix.codegen) = {
     event_sourced_entity: {
@@ -26,7 +30,7 @@ service UsersService {
     }
   };
 
-  rpc CreateUser (CreateUserRequest) returns (google.protobuf.Empty) {
+  rpc CreateUser (CreateUserRequest) returns (UserId) {
     option (kalix.method).entity.key_generator = VERSION_4_UUID;
     option (google.api.http) = {
       post: "/users/create"
